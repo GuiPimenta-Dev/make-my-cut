@@ -10,7 +10,7 @@ class SQS:
             scope,
             "DownloadsQueue",
             queue_name=f"{context.stage.lower()}-downloads",
-            visibility_timeout=Duration.minutes(1),
+            visibility_timeout=Duration.minutes(15),
         )
 
         self.compreensions_queue = sqs.Queue(
