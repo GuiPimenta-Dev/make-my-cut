@@ -15,4 +15,4 @@ class StarterConfig:
 
         services.api_gateway.create_endpoint("POST", "/videos", function, public=True)
 
-        services.sqs.downloads_queue.grant_send_messages(function)
+        services.sqs.grant_send_messages("downloads_queue", function)

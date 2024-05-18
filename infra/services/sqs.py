@@ -1,7 +1,7 @@
 from aws_cdk import Duration
 from aws_cdk import aws_sqs as sqs
-from aws_cdk.aws_lambda_event_sources import SqsEventSource
-
+from aws_cdk import aws_lambda_event_sources
+from lambda_forge.trackers import trigger, invoke
 
 class SQS:
     def __init__(self, scope, context) -> None:
@@ -20,6 +20,15 @@ class SQS:
             visibility_timeout=Duration.minutes(15),
         )
 
-    @staticmethod
-    def create_trigger(queue, function):
-        function.add_event_source(SqsEventSource(queue))
+    @trigger(service="sqs", trigger="queue", function="function")
+    def add_event_source(self, queue, function):
+        queue = getattr(self, queue)
+        event_source = aws_lambda_event_sources.SqsEventSource(queue)
+        function.add_event_source(event_source)
+        queue.grant_consume_messages(function)
+
+
+    @invoke(service="sqs", resource="queue", function="function")
+    def grant_send_messages(self, queue, function):
+        queue = getattr(self, queue)
+        queue.grant_send_messages(function)

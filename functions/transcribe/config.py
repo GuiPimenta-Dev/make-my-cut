@@ -14,8 +14,9 @@ class TranscribeConfig:
             },
         )
 
-        services.s3.create_trigger(bucket=services.s3.transcriptions_bucket, function=function)
-
-        services.s3.transcriptions_bucket.grant_read_write(function)
+        services.s3.add_event_notification("videos_bucket", function)
         
+        services.s3.grant_write("transcriptions_bucket", function)
+
         services.dynamo_db.videos_table.grant_read_data(function)
+        

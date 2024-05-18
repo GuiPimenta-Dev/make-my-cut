@@ -1,5 +1,6 @@
 from aws_cdk import aws_s3 as s3
 from aws_cdk import aws_s3_notifications
+from lambda_forge.trackers import trigger, invoke
 
 
 class S3:
@@ -17,9 +18,15 @@ class S3:
             bucket_arn=context.resources["arns"]["transcriptions_bucket_arn"],
         )
 
-    def create_trigger(self, bucket, function, stages=None):
-        if stages and self.context.stage not in stages:
-            return
-
+    @trigger(service="s3", trigger="bucket", function="function")
+    def add_event_notification(self, bucket, function):
+        bucket = getattr(self, bucket)
         notifications = aws_s3_notifications.LambdaDestination(function)
         bucket.add_event_notification(s3.EventType.OBJECT_CREATED, notifications)
+        bucket.grant_read(function)
+    
+    
+    @invoke(service="s3", resource="bucket", function="function")
+    def grant_write(self, bucket, function):
+        bucket = getattr(self, bucket)
+        bucket.grant_write(function)

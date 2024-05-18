@@ -16,8 +16,6 @@ class GetChatConfig:
             },
         )
 
-        services.sns.create_trigger(services.sns.videos_topic, function)
+        services.sns.add_event_source("videos_topic", function)
 
-        services.s3.videos_bucket.grant_read_write(function)
 
-        services.sqs.compreensions_queue.grant_send_messages(function)

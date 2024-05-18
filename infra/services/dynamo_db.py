@@ -6,12 +6,6 @@ from lambda_forge.trackers import invoke
 class DynamoDB:
     def __init__(self, scope, context) -> None:
 
-        self.compreensions_table = dynamo_db.Table.from_table_arn(
-            scope,
-            "CompreensionsTable",
-            context.resources["arns"]["compreensions_table_arn"],
-        )
-
         self.videos_table = dynamo_db.Table.from_table_arn(
             scope,
             "VideosTable",

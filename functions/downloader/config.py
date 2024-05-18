@@ -18,10 +18,8 @@ class DownloaderConfig:
             },
         )
 
-        services.sqs.create_trigger(services.sqs.downloads_queue, function)
+        services.sqs.add_event_source("downloads_queue", function)
 
-        services.sqs.downloads_queue.grant_consume_messages(function)
+        services.s3.grant_write("videos_bucket", function)
 
-        services.s3.videos_bucket.grant_read_write(function)
-
-        services.dynamo_db.videos_table.grant_write_data(function)
+        services.dynamo_db.grant_write_data("videos_table", function)

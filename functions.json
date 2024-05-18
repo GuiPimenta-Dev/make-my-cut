@@ -4,8 +4,22 @@
         "path": "./functions/downloader",
         "description": "Download a YouTube video and Stores it on S3",
         "timeout": 900,
-        "triggers": [],
-        "invocations": []
+        "triggers": [
+            {
+                "service": "sqs",
+                "trigger": "downloads_queue"
+            }
+        ],
+        "invocations": [
+            {
+                "service": "s3",
+                "resource": "videos_bucket"
+            },
+            {
+                "service": "dynamodb",
+                "resource": "videos_table"
+            }
+        ]
     },
     {
         "name": "Starter",
@@ -20,14 +34,24 @@
                 "public": true
             }
         ],
-        "invocations": []
+        "invocations": [
+            {
+                "service": "sqs",
+                "resource": "downloads_queue"
+            }
+        ]
     },
     {
         "name": "GetChat",
         "path": "./functions/get_chat",
         "description": "Get Live chat messages and stores on DynamoDB",
         "timeout": 900,
-        "triggers": [],
+        "triggers": [
+            {
+                "service": "sns",
+                "trigger": "videos_topic"
+            }
+        ],
         "invocations": []
     },
     {
@@ -35,7 +59,17 @@
         "path": "./functions/transcribe",
         "description": "Transcript audio to text",
         "timeout": 60,
-        "triggers": [],
-        "invocations": []
+        "triggers": [
+            {
+                "service": "s3",
+                "trigger": "videos_bucket"
+            }
+        ],
+        "invocations": [
+            {
+                "service": "s3",
+                "resource": "transcriptions_bucket"
+            }
+        ]
     }
 ]
