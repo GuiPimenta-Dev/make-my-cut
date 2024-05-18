@@ -1,0 +1,25 @@
+from aws_cdk import aws_s3 as s3
+from aws_cdk import aws_s3_notifications
+
+
+class S3:
+    def __init__(self, scope, context) -> None:
+
+        self.videos_bucket = s3.Bucket.from_bucket_arn(
+            scope,
+            "VideosBucket",
+            bucket_arn=context.resources["arns"]["videos_bucket_arn"],
+        )
+
+        self.transcriptions_bucket = s3.Bucket.from_bucket_arn(
+            scope,
+            "TranscriptionsBucket",
+            bucket_arn=context.resources["arns"]["transcriptions_bucket_arn"],
+        )
+
+    def create_trigger(self, bucket, function, stages=None):
+        if stages and self.context.stage not in stages:
+            return
+
+        notifications = aws_s3_notifications.LambdaDestination(function)
+        bucket.add_event_notification(s3.EventType.OBJECT_CREATED, notifications)
