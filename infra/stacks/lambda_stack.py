@@ -2,9 +2,10 @@ from aws_cdk import Stack
 from constructs import Construct
 from lambda_forge.trackers import reset
 
-
-from functions.chart.get_chart.config import GetChartConfig
-from functions.chart.transcription_worker.config import TranscriptionWorkerConfig
+from functions.chart.create_chart.config import CreateChartConfig
+from functions.chart.rate_interactions.config import RateInteractionsConfig
+from functions.chart.transcription_worker.config import \
+    TranscriptionWorkerConfig
 from functions.download.downloader.config import DownloaderConfig
 from functions.download.get_chat.config import GetChatConfig
 from functions.download.starter.config import StartDownloadConfig
@@ -27,5 +28,6 @@ class LambdaStack(Stack):
         TranscribeConfig(self.services)
 
         # Chart
-        GetChartConfig(self.services)
+        CreateChartConfig(self.services)
         TranscriptionWorkerConfig(self.services)
+        RateInteractionsConfig(self.services)
