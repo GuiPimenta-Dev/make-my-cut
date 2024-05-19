@@ -24,8 +24,7 @@ class S3:
         notifications = aws_s3_notifications.LambdaDestination(function)
         bucket.add_event_notification(s3.EventType.OBJECT_CREATED, notifications)
         bucket.grant_read(function)
-    
-    
+
     @invoke(service="s3", resource="bucket", function="function")
     def grant_write(self, bucket, function):
         bucket = getattr(self, bucket)

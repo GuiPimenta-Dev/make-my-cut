@@ -1,45 +1,53 @@
 import json
 import os
+import datetime
 
 import boto3
 from chat_downloader import ChatDownloader as cd
 
 
 def lambda_handler(event, context):
-    sqs = boto3.client("sqs")
-    COMPREENSIONS_QUEUE_URL = os.environ.get(
-        "COMPREENSIONS_QUEUE_URL",
-        "https://sqs.us-east-2.amazonaws.com/211125768252/Live-Cut-The-Bullshit-Compreensions",
-    )
+
+    dynamodb = boto3.resource("dynamodb")
+
+    CHAT_TABLE_NAME = os.environ.get("CHAT_TABLE_NAME", "Dev-Chats")
+    chats_table = dynamodb.Table(CHAT_TABLE_NAME)
 
     record = event["Records"][0]
     message = json.loads(record["Sns"]["Message"])
-    
+
     video_id = message["video_id"]
     url = message["url"]
 
     chat = cd().get_chat(url)
 
-    BATCH_SIZE = 25
-    batch = []
-
     for message in chat:
-        batch.append(
-            {
-                "video_id": video_id,
-                "timestamp": message["timestamp"],
-                "time_in_seconds": message["time_in_seconds"],
+        timestamp_seconds = message["timestamp"] / 1_000_000
+        utc_datetime = datetime.datetime.utcfromtimestamp(timestamp_seconds)
+
+        # Attach the UTC timezone
+        utc_datetime = utc_datetime.replace(tzinfo=datetime.timezone.utc)
+
+        # Format the datetime string to include the timezone information
+        formatted_date = utc_datetime.strftime("%Y-%m-%d %H:%M:%S %Z%z")
+
+        chats_table.put_item(
+            Item={
+                "PK": video_id,
+                "SK": formatted_date,
                 "message": message["message"],
                 "author": message["author"],
             }
         )
 
-        if len(batch) == BATCH_SIZE:
-            sqs.send_message(QueueUrl=COMPREENSIONS_QUEUE_URL, MessageBody=json.dumps({"batch": batch}))
-            batch = []
 
-    # Send the last batch
-    sqs.send_message(
-        QueueUrl=COMPREENSIONS_QUEUE_URL,
-        MessageBody=json.dumps({"batch": batch}),
-    )
+event = {
+    "Records": [
+        {
+            "Sns": {
+                "Message": '{"video_id": "5548f4c0-f5bb-49c9-a026-0f65ef10c412", "url": "https://www.youtube.com/watch?v=5NsoIBT-21g"}'
+            }
+        }
+    ]
+}
+lambda_handler(event, {})

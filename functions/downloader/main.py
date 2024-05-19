@@ -12,7 +12,9 @@ def lambda_handler(event, context):
 
     VIDEOS_BUCKET_NAME = os.environ.get("VIDEOS_BUCKET_NAME", "live-cut-the-bullshit-videos")
     VIDEOS_TABLE_NAME = os.environ.get("VIDEOS_TABLE_NAME", "Dev-Videos")
-    VIDEOS_TOPIC_ARN = os.environ.get("VIDEOS_TOPIC_ARN", "arn:aws:sns:us-east-2:211125768252:Live-Cut-The-Bullshit-Videos")
+    VIDEOS_TOPIC_ARN = os.environ.get(
+        "VIDEOS_TOPIC_ARN", "arn:aws:sns:us-east-2:211125768252:Live-Cut-The-Bullshit-Videos"
+    )
 
     body = json.loads(event["Records"][0]["body"])
     url = body["url"]
@@ -55,10 +57,9 @@ def lambda_handler(event, context):
             "duration": duration_formatted,
         }
     )
-    
+
     sns_client = boto3.client("sns")
     sns_client.publish(
         TopicArn=VIDEOS_TOPIC_ARN,
         Message=json.dumps({"video_id": video_id, "url": url}),
     )
-

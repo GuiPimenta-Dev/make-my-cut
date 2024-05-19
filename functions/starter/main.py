@@ -24,7 +24,9 @@ def lambda_handler(event, context):
     video_id = str(uuid.uuid4())
 
     sqs = boto3.client("sqs")
-    SQS_QUEUE_URL = os.environ.get("DOWNLOADS_QUEUE_URL", "https://sqs.us-east-2.amazonaws.com/211125768252/Live-Cut-The-Bullshit-Downloads")
+    SQS_QUEUE_URL = os.environ.get(
+        "DOWNLOADS_QUEUE_URL", "https://sqs.us-east-2.amazonaws.com/211125768252/Live-Cut-The-Bullshit-Downloads"
+    )
     message = {"url": url, "video_id": video_id, "language": language}
     sqs.send_message(QueueUrl=SQS_QUEUE_URL, MessageBody=json.dumps(message))
     return {

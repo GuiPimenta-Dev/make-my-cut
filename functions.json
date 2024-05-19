@@ -18,6 +18,10 @@
             {
                 "service": "dynamodb",
                 "resource": "videos_table"
+            },
+            {
+                "service": "sns",
+                "resource": "videos_topic"
             }
         ]
     },
@@ -52,7 +56,12 @@
                 "trigger": "videos_topic"
             }
         ],
-        "invocations": []
+        "invocations": [
+            {
+                "service": "dynamodb",
+                "resource": "chats_table"
+            }
+        ]
     },
     {
         "name": "Transcribe",
@@ -61,14 +70,65 @@
         "timeout": 60,
         "triggers": [
             {
-                "service": "s3",
-                "trigger": "videos_bucket"
+                "service": "sns",
+                "trigger": "videos_topic"
             }
         ],
         "invocations": [
             {
                 "service": "s3",
                 "resource": "transcriptions_bucket"
+            }
+        ]
+    },
+    {
+        "name": "Analyse",
+        "path": "./functions/analyse",
+        "description": "Makes the analysis",
+        "timeout": 60,
+        "triggers": [
+            {
+                "service": "api_gateway",
+                "trigger": "/analyse",
+                "method": "GET",
+                "public": true
+            }
+        ],
+        "invocations": []
+    },
+    {
+        "name": "ParseTranscription",
+        "path": "./functions/parse_transcription",
+        "description": "Parse the transcription",
+        "timeout": 60,
+        "triggers": [
+            {
+                "service": "s3",
+                "trigger": "transcriptions_bucket"
+            }
+        ],
+        "invocations": [
+            {
+                "service": "sqs",
+                "resource": "transcript_queue"
+            }
+        ]
+    },
+    {
+        "name": "TranscriptionWorker",
+        "path": "./functions/transcription_worker",
+        "description": "Parse the transcription",
+        "timeout": 18000,
+        "triggers": [
+            {
+                "service": "sqs",
+                "trigger": "transcript_queue"
+            }
+        ],
+        "invocations": [
+            {
+                "service": "dynamodb",
+                "resource": "transcriptions_table"
             }
         ]
     }

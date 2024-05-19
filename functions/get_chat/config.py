@@ -18,4 +18,4 @@ class GetChatConfig:
 
         services.sns.add_event_source("videos_topic", function)
 
-
+        services.dynamo_db.grant_write_data("chats_table", function)

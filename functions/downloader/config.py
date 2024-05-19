@@ -23,3 +23,5 @@ class DownloaderConfig:
         services.s3.grant_write("videos_bucket", function)
 
         services.dynamo_db.grant_write_data("videos_table", function)
+
+        services.sns.grant_publish("videos_topic", function)
