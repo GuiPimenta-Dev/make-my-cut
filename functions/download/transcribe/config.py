@@ -6,7 +6,8 @@ class TranscribeConfig:
 
         function = services.aws_lambda.create_function(
             name="Transcribe",
-            path="./functions/transcribe",
+            path="./functions/download",
+            directory="transcribe",
             description="Transcript audio to text",
             environment={
                 "TRANSCRIPTIONS_BUCKET_NAME": services.s3.transcriptions_bucket.bucket_name,

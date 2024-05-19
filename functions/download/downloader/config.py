@@ -6,7 +6,8 @@ class DownloaderConfig:
 
         function = services.aws_lambda.create_function(
             name="Downloader",
-            path="./functions/downloader",
+            path="./functions/download",
+            directory="downloader",
             description="Download a YouTube video and Stores it on S3",
             layers=[services.layers.pytube_layer],
             memory_size=512,

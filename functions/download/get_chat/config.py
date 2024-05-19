@@ -6,7 +6,8 @@ class GetChatConfig:
 
         function = services.aws_lambda.create_function(
             name="GetChat",
-            path="./functions/get_chat",
+            path="./functions/download",
+            directory="get_chat",
             description="Get Live chat messages and stores on DynamoDB",
             timeout=15,
             memory_size=512,

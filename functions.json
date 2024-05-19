@@ -1,7 +1,27 @@
 [
     {
+        "name": "StartDownload",
+        "path": "./functions/download/starter",
+        "description": "Start the process",
+        "timeout": 60,
+        "triggers": [
+            {
+                "service": "api_gateway",
+                "trigger": "/videos",
+                "method": "POST",
+                "public": true
+            }
+        ],
+        "invocations": [
+            {
+                "service": "sqs",
+                "resource": "downloads_queue"
+            }
+        ]
+    },
+    {
         "name": "Downloader",
-        "path": "./functions/downloader",
+        "path": "./functions/download/downloader",
         "description": "Download a YouTube video and Stores it on S3",
         "timeout": 900,
         "triggers": [
@@ -26,28 +46,8 @@
         ]
     },
     {
-        "name": "Starter",
-        "path": "./functions/starter",
-        "description": "Start the process",
-        "timeout": 60,
-        "triggers": [
-            {
-                "service": "api_gateway",
-                "trigger": "/videos",
-                "method": "POST",
-                "public": true
-            }
-        ],
-        "invocations": [
-            {
-                "service": "sqs",
-                "resource": "downloads_queue"
-            }
-        ]
-    },
-    {
         "name": "GetChat",
-        "path": "./functions/get_chat",
+        "path": "./functions/download/get_chat",
         "description": "Get Live chat messages and stores on DynamoDB",
         "timeout": 900,
         "triggers": [
@@ -65,7 +65,7 @@
     },
     {
         "name": "Transcribe",
-        "path": "./functions/transcribe",
+        "path": "./functions/download/transcribe",
         "description": "Transcript audio to text",
         "timeout": 60,
         "triggers": [

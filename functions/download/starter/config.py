@@ -1,12 +1,13 @@
 from infra.services import Services
 
 
-class StarterConfig:
+class StartDownloadConfig:
     def __init__(self, services: Services) -> None:
 
         function = services.aws_lambda.create_function(
-            name="Starter",
-            path="./functions/starter",
+            name="StartDownload",
+            path="./functions/download",
+            directory="starter",
             description="Start the process",
             environment={
                 "DOWNLOADS_QUEUE_URL": services.sqs.downloads_queue.queue_url,
