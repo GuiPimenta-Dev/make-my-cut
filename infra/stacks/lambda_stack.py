@@ -1,10 +1,10 @@
-from functions.transcription_worker.config import TranscriptionWorkerConfig
-from functions.parse_transcription.config import ParseTranscriptionConfig
-from functions.analyse.config import AnalyseConfig
 from aws_cdk import Stack
 from constructs import Construct
 from lambda_forge.trackers import reset
 
+from functions.chart.get_chart.config import GetChartConfig
+from functions.chart.transcription_worker.config import \
+    TranscriptionWorkerConfig
 from functions.downloader.config import DownloaderConfig
 from functions.get_chat.config import GetChatConfig
 from functions.starter.config import StarterConfig
@@ -32,11 +32,6 @@ class LambdaStack(Stack):
         # Transcribe
         TranscribeConfig(self.services)
 
-        # Analyse
-        AnalyseConfig(self.services)
-
-        # ParseTranscription
-        ParseTranscriptionConfig(self.services)
-
-        # TranscriptionWorker
+        # Chart
+        GetChartConfig(self.services)
         TranscriptionWorkerConfig(self.services)

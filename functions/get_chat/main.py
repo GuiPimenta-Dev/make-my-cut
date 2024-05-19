@@ -1,6 +1,6 @@
+import datetime
 import json
 import os
-import datetime
 
 import boto3
 from chat_downloader import ChatDownloader as cd

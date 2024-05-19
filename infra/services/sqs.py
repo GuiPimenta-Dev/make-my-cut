@@ -1,7 +1,6 @@
-from aws_cdk import Duration
+from aws_cdk import Duration, aws_lambda_event_sources
 from aws_cdk import aws_sqs as sqs
-from aws_cdk import aws_lambda_event_sources
-from lambda_forge.trackers import trigger, invoke
+from lambda_forge.trackers import invoke, trigger
 
 
 class SQS:

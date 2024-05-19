@@ -82,29 +82,16 @@
         ]
     },
     {
-        "name": "Analyse",
-        "path": "./functions/analyse",
-        "description": "Makes the analysis",
-        "timeout": 60,
-        "triggers": [
-            {
-                "service": "api_gateway",
-                "trigger": "/analyse",
-                "method": "GET",
-                "public": true
-            }
-        ],
-        "invocations": []
-    },
-    {
-        "name": "ParseTranscription",
-        "path": "./functions/parse_transcription",
+        "name": "GetChart",
+        "path": "./functions/chart/get_chart",
         "description": "Parse the transcription",
         "timeout": 60,
         "triggers": [
             {
-                "service": "s3",
-                "trigger": "transcriptions_bucket"
+                "service": "api_gateway",
+                "trigger": "/chart",
+                "method": "GET",
+                "public": true
             }
         ],
         "invocations": [
@@ -116,9 +103,9 @@
     },
     {
         "name": "TranscriptionWorker",
-        "path": "./functions/transcription_worker",
+        "path": "./functions/chart/transcription_worker",
         "description": "Parse the transcription",
-        "timeout": 18000,
+        "timeout": 60,
         "triggers": [
             {
                 "service": "sqs",

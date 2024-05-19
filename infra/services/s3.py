@@ -1,6 +1,6 @@
 from aws_cdk import aws_s3 as s3
 from aws_cdk import aws_s3_notifications
-from lambda_forge.trackers import trigger, invoke
+from lambda_forge.trackers import invoke, trigger
 
 
 class S3:

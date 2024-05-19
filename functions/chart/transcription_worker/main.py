@@ -1,7 +1,8 @@
 import json
 import os
-import boto3
 from datetime import datetime, timedelta, timezone
+
+import boto3
 
 
 def lambda_handler(event, context):
@@ -39,5 +40,3 @@ def lambda_handler(event, context):
             "transcription": content,
         }
     )
-
-

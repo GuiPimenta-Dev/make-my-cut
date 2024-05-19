@@ -6,8 +6,9 @@ class TranscriptionWorkerConfig:
 
         function = services.aws_lambda.create_function(
             name="TranscriptionWorker",
-            path="./functions/transcription_worker",
+            path="./functions/chart",
             description="Parse the transcription",
+            directory="transcription_worker",
             environment={
                 "VIDEOS_TABLE_NAME": services.dynamo_db.videos_table.table_name,
                 "TRANSCRIPTIONS_TABLE_NAME": services.dynamo_db.transcriptions_table.table_name,

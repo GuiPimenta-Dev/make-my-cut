@@ -1,7 +1,6 @@
+from aws_cdk import aws_lambda_event_sources
 from aws_cdk.aws_sns import Topic
-from aws_cdk import aws_lambda_event_sources
-from aws_cdk import aws_lambda_event_sources
-from lambda_forge.trackers import trigger, invoke
+from lambda_forge.trackers import invoke, trigger
 
 
 class SNS:
