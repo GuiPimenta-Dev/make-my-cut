@@ -8,6 +8,10 @@ class ParseTranscriptionConfig:
             name="ParseTranscription",
             path="./functions/parse_transcription",
             description="Parse the transcription",
+            environment={
+                "TRANSCRIPTIONS_QUEUE_URL": services.sqs.transcript_queue.queue_url,
+                "WORKERS": 15,
+            },
         )
 
         services.s3.add_event_notification("transcriptions_bucket", function)

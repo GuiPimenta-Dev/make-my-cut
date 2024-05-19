@@ -8,7 +8,10 @@ def lambda_handler(event, context):
 
     s3_client = boto3.client("s3")
     sqs = boto3.client("sqs")
-    TRANSCRIPT_QUEUE_URL = os.environ.get("TRANSCRIPT_QUEUE_URL", "https://sqs.us-east-2.amazonaws.com/211125768252/Dev-Transcript")
+    TRANSCRIPT_QUEUE_URL = os.environ.get(
+        "TRANSCRIPT_QUEUE_URL", "https://sqs.us-east-2.amazonaws.com/211125768252/Dev-Transcript"
+    )
+    WORKERS = os.environ.get("WORKERS", 50)
 
     record = event["Records"][0]
 
@@ -21,8 +24,6 @@ def lambda_handler(event, context):
     video_id = body["jobName"]
     transcription = body["results"]["items"]
 
-    WORKERS = 15
-
     total_items = len(transcription)
     items_per_batch = math.ceil(total_items / WORKERS)
     batches = [transcription[i : i + items_per_batch] for i in range(0, total_items, items_per_batch)]
@@ -33,3 +34,14 @@ def lambda_handler(event, context):
         )
 
 
+event = {
+    "Records": [
+        {
+            "s3": {
+                "bucket": {"name": "live-cut-the-bullshit-transcriptions"},
+                "object": {"key": "5548f4c0-f5bb-49c9-a026-0f65ef10c412.json"},
+            }
+        }
+    ]
+}
+lambda_handler(event, {})

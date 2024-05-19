@@ -20,7 +20,7 @@ class SQS:
             queue_name=f"{context.stage.lower()}-compreensions",
             visibility_timeout=Duration.minutes(15),
         )
-        
+
         self.transcript_queue = sqs.Queue(
             scope,
             "TranscriptQueue",

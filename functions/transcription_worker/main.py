@@ -20,16 +20,24 @@ def lambda_handler(event, context):
 
     video = videos_table.get_item(Key={"PK": video_id})["Item"]
 
-    start_date = datetime.fromisoformat(video["start_date"])
-    seconds = 0
-    for word in transcription:
-        content = word["alternatives"][0]["content"]
-        
-        if word["type"] == "pronunciation":
-            seconds += float(word["end_time"]) - float(word["start_time"])
-            
-        elif word["type"] == "punctuation":
-            seconds += 0.1
+    video_start_date = datetime.fromisoformat(video["start_date"])
+    transcription_start_date_in_seconds = float(transcription[0]["start_time"])
+    transcription_end_date_in_seconds = float(transcription[-1]["end_time"])
 
-        timestamp = start_date + timedelta(seconds=seconds)
-        transcriptions_table.put_item(Item={"PK": video_id, "SK": timestamp.isoformat(), "content": content})
+    transcription_start_timestamp = video_start_date + timedelta(seconds=transcription_start_date_in_seconds)
+    transcription_end_timestamp = video_start_date + timedelta(seconds=transcription_end_date_in_seconds)
+
+    content = ""
+    for word in transcription:
+        content += word["alternatives"][0]["content"] + " "
+
+    transcriptions_table.put_item(
+        Item={
+            "PK": video_id,
+            "SK": transcription_start_timestamp.isoformat(),
+            "end_transcription": transcription_end_timestamp.isofomat(),
+            "transcription": content,
+        }
+    )
+
+
