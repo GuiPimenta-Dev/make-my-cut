@@ -2,11 +2,11 @@ import json
 import os
 from datetime import datetime, timedelta
 from boto3.dynamodb.conditions import Key
-from groq import Groq
-
+from dotenv import load_dotenv
 import boto3
 from openai import OpenAI
 
+load_dotenv()
 
 def get_last_valid_end_time(transcription, key):
     for item in transcription:
@@ -86,9 +86,8 @@ def lambda_handler(event, context):
     )["Items"]
 
     messages = [message["message"] for message in chat]
-
-    client = Groq(api_key="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")
-    client = OpenAI(api_key="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")
+    
+    client = OpenAI()
     current_dir = os.path.dirname(os.path.realpath(__file__))
     prompt = open(f"{current_dir}/prompt.txt").read()
     
