@@ -1,14 +1,14 @@
 from infra.services import Services
 
-
-class RateInteractionsConfig:
+class GetChartConfig:
     def __init__(self, services: Services) -> None:
 
         function = services.aws_lambda.create_function(
-            name="RateInteractions",
+            name="GetChart",
             path="./functions/chart",
             description="Rate interactions based on transcription and chat",
-            directory="rate_interactions",
+            directory="get_chart"
         )
 
-        services.dynamo_db.create_stream("transcriptions_table", function)
+        services.api_gateway.create_endpoint("GET", "/chart", function, public=True)
+        

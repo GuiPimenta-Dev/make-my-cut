@@ -83,6 +83,21 @@
     },
     {
         "name": "GetChart",
+        "path": "./functions/chart/get_chart",
+        "description": "Rate interactions based on transcription and chat",
+        "timeout": 60,
+        "triggers": [
+            {
+                "service": "api_gateway",
+                "trigger": "/chart",
+                "method": "GET",
+                "public": true
+            }
+        ],
+        "invocations": []
+    },
+    {
+        "name": "CreateChart",
         "path": "./functions/chart/create_chart",
         "description": "Parse the transcription",
         "timeout": 60,
@@ -118,18 +133,5 @@
                 "resource": "transcriptions_table"
             }
         ]
-    },
-    {
-        "name": "RateInteractions",
-        "path": "./functions/chart/rate_interactions",
-        "description": "Rate interactions based on transcription and chat",
-        "timeout": 60,
-        "triggers": [
-            {
-                "service": "dynamodb",
-                "trigger": "transcriptions_table"
-            }
-        ],
-        "invocations": []
     }
 ]

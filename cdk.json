@@ -45,7 +45,7 @@
       "owner": "GuiPimenta-Dev",
       "name": "make-my-cut"
     },
-    "bucket": "",
+    "bucket": "gui-docs",
     "coverage": 80,
     "base_url": "",
     "dev": {

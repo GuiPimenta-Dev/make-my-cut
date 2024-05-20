@@ -6,6 +6,7 @@ from io import BytesIO
 
 import boto3
 from pytube import YouTube
+from googleapiclient.discovery import build
 
 
 def lambda_handler(event, context):
@@ -36,9 +37,7 @@ def lambda_handler(event, context):
         Metadata={"url": url, "video_id": video_id},
     )
 
-    start_date = yt.publish_date
     duration_in_seconds = yt.length
-    end_date = start_date + datetime.timedelta(seconds=duration_in_seconds)
     hours, remainder = divmod(duration_in_seconds, 3600)
     minutes, seconds = divmod(remainder, 60)
     duration_formatted = f"{hours:02}:{minutes:02}:{seconds:02}"
@@ -52,8 +51,7 @@ def lambda_handler(event, context):
             "url": url,
             "title": yt.title,
             "language": language,
-            "start_date": start_date.replace(tzinfo=timezone.utc).isoformat(),
-            "end_date": end_date.replace(tzinfo=timezone.utc).isoformat(),
+            "publish_date": yt.publish_date.isoformat(),
             "duration": duration_formatted,
         }
     )
@@ -63,3 +61,11 @@ def lambda_handler(event, context):
         TopicArn=VIDEOS_TOPIC_ARN,
         Message=json.dumps({"video_id": video_id, "url": url}),
     )
+
+
+event = {
+    "Records": [
+        {"body": '{"url": "https://www.youtube.com/watch?v=EYFpRvwK5sE", "video_id": "Q5okdHvzjK8", "language": "en"}'}
+    ]
+}
+lambda_handler(event, None)

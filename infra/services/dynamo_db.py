@@ -36,7 +36,7 @@ class DynamoDB:
             table, starting_position=lambda_.StartingPosition.TRIM_HORIZON
         )
         function.add_event_source(my_dynamo_event_stream)
-
+    
     @invoke(service="dynamodb", resource="table", function="function")
     def grant_write_data(self, table, function):
         table = getattr(self, table)
