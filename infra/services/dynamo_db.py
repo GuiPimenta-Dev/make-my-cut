@@ -50,3 +50,18 @@ class DynamoDB:
                 resources=[f"{table.table_arn}/index/*"],
             )
         )
+
+    @staticmethod
+    def create_table(self, name):
+        dynamo_db.Table(
+            self, name,
+            partition_key=dynamo_db.Attribute(
+                name="PK",
+                type=dynamo_db.AttributeType.STRING
+            ),
+            sort_key=dynamo_db.Attribute(
+                name="SK",
+                type=dynamo_db.AttributeType.STRING
+            ),
+            billing_mode=dynamo_db.BillingMode.PAY_PER_REQUEST,
+        )

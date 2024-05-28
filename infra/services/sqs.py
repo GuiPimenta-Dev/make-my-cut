@@ -13,18 +13,11 @@ class SQS:
             visibility_timeout=Duration.minutes(15),
         )
 
-        self.compreensions_queue = sqs.Queue(
-            scope,
-            "CompreensionsQueue",
-            queue_name=f"{context.stage.lower()}-compreensions",
-            visibility_timeout=Duration.minutes(15),
-        )
-
         self.transcript_queue = sqs.Queue(
             scope,
             "TranscriptQueue",
             queue_name=f"{context.stage.lower()}-transcript",
-            visibility_timeout=Duration.minutes(15),
+            # visibility_timeout=Duration.minutes(15),
         )
 
     @trigger(service="sqs", trigger="queue", function="function")

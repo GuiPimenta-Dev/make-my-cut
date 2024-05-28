@@ -8,6 +8,6 @@ class CreateChartConfig:
             name="CreateChart", path="./functions/chart", description="Parse the transcription", directory="create_chart"
         )
 
-        services.api_gateway.create_endpoint("POST", "/chart", function, public=True)
+        services.api_gateway.create_endpoint("POST", "/chart/{video_id}", function, public=True)
 
         services.sqs.grant_send_messages("transcript_queue", function)

@@ -104,7 +104,7 @@
         "triggers": [
             {
                 "service": "api_gateway",
-                "trigger": "/chart",
+                "trigger": "/chart/{video_id}",
                 "method": "POST",
                 "public": true
             }

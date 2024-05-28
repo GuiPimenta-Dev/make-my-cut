@@ -12,3 +12,6 @@ class GetChartConfig:
 
         services.api_gateway.create_endpoint("GET", "/chart", function, public=True)
         
+        services.dynamo_db.transcriptions_table.grant_read_data(function)
+        
+        services.dynamo_db.add_query_permission(services.dynamo_db.transcriptions_table, function)

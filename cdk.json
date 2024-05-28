@@ -38,7 +38,7 @@
     "@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy": true,
     "@aws-cdk/aws-route53-patters:useCertificate": true,
     "@aws-cdk/customresources:installLatestAwsSdkDefault": false,
-    "region": "us-east-2",
+    "region": "us-east-1",
     "account": "211125768252",
     "name": "Make-My-Cut",
     "repo": {
@@ -51,20 +51,18 @@
     "dev": {
       "arns": {
         "videos_bucket_arn": "arn:aws:s3:::dev-videos-bucket",
-        "live_chat_table_arn": "arn:aws:dynamodb:us-east-2:211125768252:table/Dev-Live-Chat",
-        "compreensions_table_arn": "arn:aws:dynamodb:us-east-2:211125768252:table/Dev-Compreensions",
-        "videos_table_arn": "arn:aws:dynamodb:us-east-2:211125768252:table/Dev-Videos",
+        "live_chat_table_arn": "arn:aws:dynamodb:us-east-1:211125768252:table/Dev-Live-Chat",
+        "videos_table_arn": "arn:aws:dynamodb:us-east-1:211125768252:table/Dev-Videos",
         "transcriptions_bucket_arn": "arn:aws:s3:::dev-cut-the-bullshit-transcriptions",
-        "videos_topic_arn": "arn:aws:sns:us-east-2:211125768252:Dev-Cut-The-Bullshit-Videos",
-        "chats_table_arn": "arn:aws:dynamodb:us-east-2:211125768252:table/Dev-Chats",
-        "transcriptions_table_arn": "arn:aws:dynamodb:us-east-2:211125768252:table/Dev-Transcriptions"
+        "videos_topic_arn": "arn:aws:sns:us-east-1:211125768252:Dev-Cut-The-Bullshit-Videos",
+        "chats_table_arn": "arn:aws:dynamodb:us-east-1:211125768252:table/Dev-Chats",
+        "transcriptions_table_arn": "arn:aws:dynamodb:us-east-1:211125768252:table/Dev-Transcriptions"
       }
     },
     "prod": {
       "arns": {
         "videos_bucket_arn": "arn:aws:s3:::dev-videos-bucket",
         "live_chat_table_arn": "arn:aws:dynamodb:us-east-2:211125768252:table/Dev-Live-Chat",
-        "compreensions_table_arn": "arn:aws:dynamodb:us-east-2:211125768252:table/Dev-Compreensions",
         "videos_table_arn": "arn:aws:dynamodb:us-east-2:211125768252:table/Dev-Videos",
         "transcriptions_bucket_arn": "arn:aws:s3:::dev-cut-the-bullshit-transcriptions",
         "videos_topic_arn": "arn:aws:sns:us-east-2:211125768252:Dev-Cut-The-Bullshit-Videos",

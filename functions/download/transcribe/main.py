@@ -1,3 +1,4 @@
+import json
 import os
 
 import boto3
@@ -13,9 +14,13 @@ def lambda_handler(event, context):
     dynamodb = boto3.resource("dynamodb")
 
     record = event["Records"][0]
+    message = json.loads(record["Sns"]["Message"])
 
-    bucket_name = record["s3"]["bucket"]["name"]
-    object_key = record["s3"]["object"]["key"]
+    video_id = message["video_id"]
+
+    bucket_name = "live-cut-the-bullshit-videos"
+    object_key = f"{video_id}.mp3"
+    
     s3_object = s3_client.get_object(Bucket=bucket_name, Key=object_key)
 
     video_id = s3_object["Metadata"]["video_id"]
@@ -31,3 +36,4 @@ def lambda_handler(event, context):
         LanguageCode=video["language"],
         OutputBucketName=TRANSCRIPTIONS_BUCKET_NAME,
     )
+

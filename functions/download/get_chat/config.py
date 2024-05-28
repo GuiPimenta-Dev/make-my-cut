@@ -13,7 +13,7 @@ class GetChatConfig:
             memory_size=512,
             layers=[services.layers.chat_downloader_layer],
             environment={
-                "COMPREENSIONS_QUEUE_URL": services.sqs.compreensions_queue.queue_url,
+                # "COMPREENSIONS_QUEUE_URL": services.sqs.compreensions_queue.queue_url,
             },
         )
 

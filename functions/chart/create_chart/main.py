@@ -80,9 +80,9 @@ def lambda_handler(event, context):
     start_time = event["queryStringParameters"].get("start_time", None)
 
     s3_client = boto3.client("s3")
-    sqs = boto3.client("sqs")
+    sqs = boto3.client("sqs", "us-east-1")
     TRANSCRIPT_QUEUE_URL = os.environ.get(
-        "TRANSCRIPT_QUEUE_URL", "https://sqs.us-east-2.amazonaws.com/211125768252/Dev-Transcript"
+        "TRANSCRIPT_QUEUE_URL", "https://sqs.us-east-1.amazonaws.com/211125768252/Live-Make-My-Cut-transcript_queue"
     )
 
     TRANSCRIPTIONS_BUCKET = os.environ.get("TRANSCRIPTIONS_BUCKET", "live-cut-the-bullshit-transcriptions")
@@ -95,25 +95,27 @@ def lambda_handler(event, context):
     video_id = body["jobName"]
     transcription = body["results"]["items"]
 
-    interval_in_seconds = interval * 60
+    interval_in_seconds = int(interval) * 60
     batches = group_by_interval(transcription, interval_in_seconds)
 
-    for batch in batches:
+    for index, batch in enumerate(batches):
         sqs.send_message(
             QueueUrl=TRANSCRIPT_QUEUE_URL,
             MessageBody=json.dumps(
-                {"video_id": video_id, "transcription": batch, "interval": interval, "start_time": start_time}
+                {"video_id": video_id, "transcription": batch, "interval": interval, "start_time": start_time, "index": index}
             ),
         )
 
     return {"statusCode": 200, "body": json.dumps({"message": "ok!"}), "headers": {"Access-Control-Allow-Origin": "*"}}
 
 
-event = {
-    "pathParameters": {"video_id": "5548f4c0-f5bb-49c9-a026-0f65ef10c412"},
-    "queryStringParameters": {
-        "interval": 10,
-        "start_time": "2024-04-02 21:06:27 UTC+0000",
-    },
-}
-lambda_handler(event, None)
+# event = {
+#     "pathParameters": {"video_id": "6993d08e-a703-445e-a288-79fd07053819"},
+#     "queryStringParameters": {
+#         "interval": 10,
+#         "start_time": "2024-04-02 21:06:27 UTC+0000",
+#     },
+# }
+# lambda_handler(event, None)
+
+

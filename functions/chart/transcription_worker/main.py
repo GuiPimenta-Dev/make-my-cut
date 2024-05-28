@@ -53,8 +53,10 @@ def lambda_handler(event, context):
     transcription = body["transcription"]
     interval = body["interval"]
     start_time = body["start_time"]
+    index = body["index"]
+    print(index)
 
-    CHATS_TABLE_NAME = os.environ.get("TRANSCRIPTIONS_TABLE_NAME", "Dev-Transcriptions")
+    CHATS_TABLE_NAME = os.environ.get("TRANSCRIPTIONS_TABLE_NAME", "Dev-Result")
 
     transcriptions_table = dynamodb.Table(CHATS_TABLE_NAME)
 
@@ -77,7 +79,7 @@ def lambda_handler(event, context):
         else:
             content += word["alternatives"][0]["content"]
 
-    CHATS_TABLE_NAME = os.environ.get("CHATS_TABLE_NAME", "Dev-Chats")
+    CHATS_TABLE_NAME = os.environ.get("CHATS_TABLE_NAME", "Dev-Result")
     chats_table = dynamodb.Table(CHATS_TABLE_NAME)
 
     chat = chats_table.query(
@@ -140,11 +142,11 @@ def lambda_handler(event, context):
     )
 
 
-batches = json.load(open("batches.json"))
-for batch in batches:
-    lambda_handler(
-        {"Records": [{"body": json.dumps({**batch, "interval": 10, "start_time": "2024-04-02 20:50:33 UTC+0000"})}]},
-        None,
-    )
+# batches = json.load(open("batches.json"))
+# for batch in batches:
+#     lambda_handler(
+#         {"Records": [{"body": json.dumps({**batch, "interval": 10, "start_time": "2024-04-02 20:50:33 UTC+0000"})}]},
+#         None,
+#     )
 
 

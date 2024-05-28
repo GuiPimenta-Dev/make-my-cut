@@ -14,7 +14,7 @@ def lambda_handler(event, context):
     VIDEOS_BUCKET_NAME = os.environ.get("VIDEOS_BUCKET_NAME", "live-cut-the-bullshit-videos")
     VIDEOS_TABLE_NAME = os.environ.get("VIDEOS_TABLE_NAME", "Dev-Videos")
     VIDEOS_TOPIC_ARN = os.environ.get(
-        "VIDEOS_TOPIC_ARN", "arn:aws:sns:us-east-2:211125768252:Live-Cut-The-Bullshit-Videos"
+        "VIDEOS_TOPIC_ARN", "arn:aws:sns:us-east-1:211125768252:Live-Make-My-Cut-videos_topic"
     )
 
     body = json.loads(event["Records"][0]["body"])
@@ -56,16 +56,16 @@ def lambda_handler(event, context):
         }
     )
 
-    sns_client = boto3.client("sns")
+    sns_client = boto3.client("sns", region_name="us-east-1")
     sns_client.publish(
         TopicArn=VIDEOS_TOPIC_ARN,
         Message=json.dumps({"video_id": video_id, "url": url}),
     )
 
 
-event = {
-    "Records": [
-        {"body": '{"url": "https://www.youtube.com/watch?v=EYFpRvwK5sE", "video_id": "Q5okdHvzjK8", "language": "en"}'}
-    ]
-}
-lambda_handler(event, None)
+# event = {
+#     "Records": [
+#         {"body": '{"url": "https://www.youtube.com/watch?v=EYFpRvwK5sE", "video_id": "Q5okdHvzjK8", "language": "en"}'}
+#     ]
+# }
+# lambda_handler(event, None)
