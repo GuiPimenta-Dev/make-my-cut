@@ -20,7 +20,7 @@ class APIGateway:
         )
 
 #
-        self.rest = REST(scope=scope, api=api, context=context)
+        self.rest = REST(scope=scope, context=context, api=api)
 
     @trigger(service="api_gateway", trigger="path", function="function", extra=["method", "public"])
     def create_endpoint(self, method, path, function, public=False, authorizer=None):
