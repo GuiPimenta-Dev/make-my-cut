@@ -19,6 +19,7 @@ class APIGateway:
             },
         )
 
+#
         self.rest = REST(scope=scope, api=api, context=context)
 
     @trigger(service="api_gateway", trigger="path", function="function", extra=["method", "public"])
